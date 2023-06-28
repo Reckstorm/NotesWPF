@@ -41,17 +41,9 @@ namespace NotesWPF.Models
 
         public Note()
         {
-            id = 0;
             title = string.Empty;
             text = string.Empty;
-            date = DateTime.MinValue;
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string prop = "")
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+            date = DateTime.Now;
         }
     }
 }

@@ -13,7 +13,7 @@ namespace NotesWPF.ViewModel
     public class MainVM
     {
         public ObservableCollection<Note> Notes { get; set; }
-        public Note selectedNote;
+        private Note selectedNote;
         public Context context = new Context();
 
         public Note SelectedNote
@@ -29,14 +29,7 @@ namespace NotesWPF.ViewModel
             {
                 Notes.Add(note);
             }
-            SelectedNote = Notes[0];
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string prop = "")
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+            //SelectedNote = Notes[0];
         }
     }
 }
