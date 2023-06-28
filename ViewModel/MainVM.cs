@@ -25,6 +25,7 @@ namespace NotesWPF.ViewModel
         public MainVM()
         {
             Notes = new ObservableCollection<Note>();
+
             foreach (Note note in context.Notes)
             {
                 Notes.Add(note);
