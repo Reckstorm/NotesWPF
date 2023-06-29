@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace NotesWPF.ViewModel
 {
@@ -21,6 +22,10 @@ namespace NotesWPF.ViewModel
             {
                 _model.AddCommand(new Note() { Date = DateTime.Now});
             });
+            FocusCommand = new DelegateCommand<TextBox>(tb =>
+            {
+                tb.Focus();
+            });
             RemoveCommand = new DelegateCommand<Note>(note =>
             {
                 _model.RemoveCommand(note);
@@ -33,6 +38,7 @@ namespace NotesWPF.ViewModel
             });
         }
         public DelegateCommand AddCommand { get; }
+        public DelegateCommand<TextBox> FocusCommand { get; }
         public DelegateCommand<Note> RemoveCommand { get; }
         public DelegateCommand<Note> SaveCommand { get; }
         public ReadOnlyObservableCollection<Note> Notes => _model.PublicNotes;
