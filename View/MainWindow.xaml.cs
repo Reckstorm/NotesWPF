@@ -23,21 +23,10 @@ namespace NotesWPF
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainVM MainViewModel { get; set; }
         public MainWindow()
         {
             InitializeComponent();
-            MainViewModel = new MainVM();
+            this.DataContext = new MainVM();
         }
-
-        //private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        //{
-        //    SaveNote(this.NotesList.SelectedItem as Note);
-        //}
-
-        //private void NotesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        //{
-        //    SaveNote(this.NotesList.SelectedItem as Note);
-        //}
     }
 }
