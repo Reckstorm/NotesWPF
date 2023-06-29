@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Prism.Mvvm;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -8,35 +9,50 @@ using System.Threading.Tasks;
 
 namespace NotesWPF.Models
 {
-    public class Note
+    public class Note : BindableBase
     {
         private int id;
         private string title;
         private string text;
         private DateTime date;
-
         public int Id
         {
             get { return id; }
-            set { id = value; }
+            set
+            {
+                id = value;
+                RaisePropertyChanged(nameof(Id));
+            }
         }
 
         public string Title
         {
             get { return title; }
-            set { title = value; }
+            set
+            {
+                title = value;
+                RaisePropertyChanged(nameof(Title));
+            }
         }
 
         public string Text
         {
             get { return text; }
-            set { text = value; }
+            set
+            {
+                text = value;
+                RaisePropertyChanged(nameof(Text));
+            }
         }
 
         public DateTime Date
         {
             get { return date; }
-            set { date = value; }
+            set
+            {
+                date = value;
+                RaisePropertyChanged(nameof(Date));
+            }
         }
 
         public Note()

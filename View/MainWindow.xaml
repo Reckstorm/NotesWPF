@@ -4,49 +4,113 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NotesWPF"
+        xmlns:viewModel="clr-namespace:NotesWPF.ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="900" Closing="Window_Closing">
+        Title="MainWindow" Height="450" Width="900">
+    <Window.DataContext>
+        <viewModel:MainVM/>
+    </Window.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"></ColumnDefinition>
             <ColumnDefinition Width="3*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Border Grid.Column="0" BorderBrush="Black" BorderThickness="1">
-            <ListBox  ItemsSource="{Binding Notes}" SelectedItem="{Binding SelectedNote}" Name="NotesList" SelectionChanged="NotesList_SelectionChanged" HorizontalContentAlignment="Stretch">
+        <Border Grid.Column="0" 
+                BorderBrush="Black" 
+                BorderThickness="1">
+            <ListBox  ItemsSource="{Binding Notes}" 
+                      SelectedItem="{Binding SelectedNote}"
+                      x:Name="NotesList" 
+                      HorizontalContentAlignment="Stretch">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Grid Margin="5" HorizontalAlignment="Stretch">
+                        <Grid Margin="5" 
+                              HorizontalAlignment="Stretch">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="4*"/>
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="{Binding Path=Title}" FontWeight="DemiBold" Margin="0 0 5 0" HorizontalAlignment="Left" VerticalAlignment="Center"></TextBlock>
-                            <Button Grid.Column="1" Name="Delete_btn" Background="Red" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ToolTip="Remove note" Click="Delete_btn_Click"></Button>
+                            <TextBlock Grid.Column="0" 
+                                       Text="{Binding Path=Title}" 
+                                       FontWeight="DemiBold" 
+                                       Margin="0 0 5 0" 
+                                       HorizontalAlignment="Left" 
+                                       VerticalAlignment="Center"></TextBlock>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
         </Border>
-        <Border Grid.Column="1" BorderBrush="Black" BorderThickness="1">
-            <Grid DataContext="{Binding SelectedNote}">
-                <Grid.RowDefinitions>
+        <Border Grid.Column="1" 
+                BorderBrush="Black" 
+                BorderThickness="1">
+            <Grid>
+                    <Grid.RowDefinitions>
                     <RowDefinition Height="auto"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
-                <Border Margin="5" Grid.Row="0" BorderBrush="Black" BorderThickness="1">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                        <Button Content="New" Name="New_btn" Margin="5" Width="100" Click="New_btn_Click"/>
-                        <Label Content="ID:" VerticalAlignment="Center"></Label>
-                        <TextBox Name="ID_tb" IsReadOnly="True" Text="{Binding Path=Id}" FontWeight="DemiBold" Width="20" VerticalAlignment="Center"></TextBox>
-                        <Label Content="Name:" VerticalAlignment="Center"></Label>
-                        <TextBox Name="Name_tb" Text="{Binding Path=Title}" FontWeight="DemiBold" Width="140" VerticalAlignment="Center"></TextBox>
-                        <Label Content="Date:" VerticalAlignment="Center"></Label>
-                        <TextBox Name="Date_tb" IsReadOnly="True" Text="{Binding Path=Date}" FontWeight="DemiBold" Width="140" VerticalAlignment="Center"></TextBox>
-                        <Button Content="Save" Name="Save_btn" Margin="5" Width="100" Click="Save_btn_Click" />
-                    </StackPanel>
+                <Border Margin="5" 
+                        Grid.Row="0" 
+                        BorderBrush="Black" 
+                        BorderThickness="1">
+                    <DockPanel HorizontalAlignment="Stretch">
+                        <Button Content="New" 
+                                Name="New_btn" 
+                                Margin="5" 
+                                Width="100" 
+                                Command="{Binding AddCommand}"
+                                CommandParameter="{Binding ElementName=NotesList}"/>
+                        <StackPanel DataContext="{Binding SelectedNote}" 
+                                    Orientation="Horizontal">
+                            <Label Content="ID:" 
+                               VerticalAlignment="Center"></Label>
+                            <TextBox x:Name="ID_tb" 
+                                     IsReadOnly="True" 
+                                     Text="{Binding Path=Id}" 
+                                     FontWeight="DemiBold" Width="20" 
+                                     VerticalAlignment="Center"></TextBox>
+                            <Label Content="Name:" 
+                                   VerticalAlignment="Center"></Label>
+                            <TextBox x:Name="Name_tb" 
+                                     Text="{Binding Path=Title}" 
+                                     FontWeight="DemiBold" 
+                                     Width="140" 
+                                     VerticalAlignment="Center"></TextBox>
+                            <Label Content="Date:" 
+                                   VerticalAlignment="Center"></Label>
+                            <TextBox x:Name="Date_tb" 
+                                 IsReadOnly="True" 
+                                 Text="{Binding Path=Date}" 
+                                 FontWeight="DemiBold" 
+                                 Width="120" 
+                                 VerticalAlignment="Center"></TextBox>
+                        </StackPanel>
+                        <Button Content="Save" 
+                                Name="Save_btn" 
+                                Margin="5" 
+                                Width="100" 
+                                Command="{Binding SaveCommand}"
+                                CommandParameter="{Binding ElementName=NotesList, Path=SelectedItem}"/>
+                        <Button 
+                                Background="Red" 
+                                Width="30"
+                                Height="30"
+                                ToolTip="Remove note"
+                                Command="{Binding RemoveCommand}"
+                                CommandParameter="{Binding ElementName=NotesList, Path=SelectedItem}"></Button>
+                    </DockPanel>
                 </Border>
-                <Border Margin="5" Grid.Row="1" BorderBrush="Black" BorderThickness="1">
-                    <TextBox Name="Text_tb" Margin="5" Text="{Binding Path=Text}" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible"></TextBox>
+                <Border Margin="5" 
+                        Grid.Row="1" 
+                        BorderBrush="Black" 
+                        BorderThickness="1"
+                        DataContext="{Binding SelectedNote}">
+                    <TextBox x:Name="Text_tb" 
+                             Margin="5" 
+                             Text="{Binding Path=Text}" 
+                             TextWrapping="Wrap" 
+                             AcceptsReturn="True" 
+                             VerticalScrollBarVisibility="Visible"></TextBox>
                 </Border>
             </Grid>
         </Border>
